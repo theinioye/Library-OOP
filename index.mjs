@@ -88,35 +88,81 @@ const Titanic = new DVD ( `Titanic`, `Leo Arthur`, `003`, true , `Greta Gerwig`,
 
 Titanic.getItemDetails()
 
-//    class LIbrary {
-//     constructor ( name, items ){
-//         this.name = name
+   class LIbrary {
+    constructor ( name ){
+        this.name = name
+        this.items = []
+        this.checkedOutItems = {}
+   
 
-//     }
+    }
 
-//     addItem() {
+    addItem(itemName) { 
+        this.items.push(itemName)
+        console.log ( `This item " ${itemName} has been successfully added to Library " ` )
 
-//       }
-//     removeItem(){
 
-//        }
+      }
 
-//     checkedOutItems(){
+    removeItem(itemName){ 
+        const index = this.items.indexOf(itemName)
+        if (index !== -1) {
+            this.items.splice(index, 1 )
+            console.log (`This item "${itemName}" has been removed from the library `)
+        } else {
+            console.log ( `This item "${itemName}" does not exist in the library and so cannot be removed.`)
+        }
 
-//        }
+       }
 
-//     returnItem(){
+    checkOutItem(itemName, member){
+        const index = this.items.indexOf(itemName)
+        if (index != -1 ) {
+            this.items.splice(index, 1 )
+            this.checkedOutItems[itemName] = member
+            console.log ( ` "${itemName}" sucessfully checked out by ${member}`)
+             } else { 
+            if (this.checkedOutItems[itemName]) {
+                console.log ( ` This ""${itemName}" has already been checked out by ${this.checkedOutItems[itemName]} and is currently unavailable. Pleasae check back soon. `)
+            } else {
+            console.log ( ` This item "${itemName}" does not exist in the library.` )
+        }
+     }
+    }
+    
 
-//        }
-//     listAvailable() {
+
+
+    returnItem(itemName, member){
+        if (this.checkedOutItems[itemName] === member) {
+            this.items.push(itemName)
+            delete  this.checkedOutItems[itemName]
+            console.log(` "${itemName}" has been successfully returned by ${member}`)
+        } else { 
+            console.log (` "${itemName}" was not checked out by ${member}`)
+        }
+    }
+
+    
+    listAvailable() {
+        console.log (` Listing all available books in the Library`)
+
+        this.items.forEach((item, index) => {
+            console.log ( `${index + 1 }. ${item}`)
+
+        })
         
-//      }
+     }
 
-//     listCheckedOut() {
+    listCheckedOut() { 
+        console.log ( `Listing all checked out library items`)
+        for ( const [item, member] of Object.entries(this.checkedOutItems)) {
+            console.log (`"${item}" checked out by ${member}.`)
+        }
 
-//     }
+    }
 
-//   }
+  }
 
    class Member {
     constructor ( name, memberId, checkedOutItems ) {
@@ -171,5 +217,26 @@ maryjane.returnItem(`One Love Sermon CD`)
 maryjane.returnItem(`Battle of the Bands Video Game`)
 
 maryjane.listCheckedOutItems()
+
+const oluyolePublicLibrary = new LIbrary (`Oluyole Public Library`)
+oluyolePublicLibrary.addItem(`Mr Bean's Tales`)
+oluyolePublicLibrary.addItem(`Mr Bean's Triumphs`)
+oluyolePublicLibrary.addItem(`Mr Bean's Troubles`)
+oluyolePublicLibrary.addItem(`Mr Bean's Teasers`)
+oluyolePublicLibrary.addItem(`Mr Bean's Adventures`)
+oluyolePublicLibrary.addItem(`Mr Bean and Friends`)
+oluyolePublicLibrary.addItem(`Mr Bean; The Sequel`)
+
+
+oluyolePublicLibrary.checkOutItem(`Mr Bean's Troubles`, `Ini`)
+oluyolePublicLibrary.checkOutItem(`Mr Bean's Adventures`,`Ini`)
+oluyolePublicLibrary.checkOutItem(`Mr Bean's Troubles`, `Phillip`)
+oluyolePublicLibrary.checkOutItem(`Mr Bean and Friends`, `Eniola`)
+oluyolePublicLibrary.returnItem(`Mr Bean; The Sequel`, `Emmanuel`)
+oluyolePublicLibrary.returnItem(`Mr Bean's Troubles`, `Faithia`)
+oluyolePublicLibrary.returnItem(`Mr Bean's Troubles`, `Ini`)
+oluyolePublicLibrary.checkOutItem(`Mr Bean's Troubles`, `Phillip`)
+oluyolePublicLibrary.listAvailable()
+oluyolePublicLibrary.listCheckedOut()
 
 
